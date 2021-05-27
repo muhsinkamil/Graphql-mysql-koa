@@ -1,45 +1,40 @@
-require('dotenv').config()
-import Koa from 'koa'
-import Router from 'koa-router'
-import cors from '@koa/cors'
-import { ApolloServer } from 'apollo-server-koa'
-import { createConnection } from 'typeorm'
-import bodyParser from 'koa-bodyparser'
+require("dotenv").config();
+import Koa from "koa";
+import Router from "koa-router";
+import bodyParser from "koa-bodyparser";
+import cors from "@koa/cors";
+import { ApolloServer } from "apollo-server-koa";
+import { createConnection } from "typeorm";
+import { Users } from "./Entities/Users";
+import { schema } from "./Schema";
 
 const main = async () => {
-
   await createConnection({
-    type: 'mysql',
-    database: process.env.DATABASE,
-    username: process.env.USERNAME,
+    type: "mysql",
+    database: "graphqlCrud",
+    username: process.env.USER_NAME,
     password: process.env.PASSWORD,
-    port: 4000,
     logging: true,
     synchronize: false,
-  })
+    entities: [Users],
+  });
 
-  const app = new Koa()
-  const router = new Router()
+  const app = new Koa();
+  const router = new Router();
 
-  // middlewares
-  app.use(cors())
-  app.use(bodyParser())
+  app.use(cors());
+  app.use(bodyParser());
 
-  //   const server = new ApolloServer({ schema, playground: {
-  //     endpoint: '/api/graphql'
-  //   }
-  // })
-  // server.applyMiddleware({ app, path: '/api/graphql' });
+  const server = new ApolloServer({
+    schema,
+  });
 
-  // Routes
-  // app.use(async ctx => (ctx.body = "Hello world"))
+  server.applyMiddleware({ app });
 
-  router.get('/', (ctx) => (ctx.body = { message: 'Hello world' }))
-  app.use(router.routes()).use(router.allowedMethods())
+  router.get("/", (ctx) => (ctx.body = { message: "Hola world" }));
+  app.use(router.routes()).use(router.allowedMethods());
 
-  app.listen(4000, () => console.log('Listening on 4000'))
-}
+  app.listen(4000, () => console.log("server started at 4000"));
+};
 
-main().catch((err) => {
-  console.log(err)
-})
+main().catch((e) => console.log(e));
