@@ -15,7 +15,7 @@ const main = async () => {
     username: process.env.USER_NAME,
     password: process.env.PASSWORD,
     logging: true,
-    synchronize: false,
+    synchronize: true,
     entities: [Users],
   });
 
@@ -29,9 +29,8 @@ const main = async () => {
     schema,
   });
 
-  server.applyMiddleware({ app });
+  server.applyMiddleware({ app, path: "/api/graphql" });
 
-  router.get("/", (ctx) => (ctx.body = { message: "Hola world" }));
   app.use(router.routes()).use(router.allowedMethods());
 
   app.listen(4000, () => console.log("server started at 4000"));
