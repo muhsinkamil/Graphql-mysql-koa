@@ -16,6 +16,27 @@ export const CREATE_USER = {
   },
 };
 
+export const UPDATE_PASSWORD = {
+  type: UserType,
+  args: {
+    username: { type: GraphQLString! },
+    oldPassword: { type: GraphQLString! },
+    newPassword: { type: GraphQLString! },
+  },
+  async resolve(root: any, args: any) {
+    const { username, oldPassword, newPassword } = args;
+    const user = await Users.findOne({ username });
+    const currentPassword = user?.password;
+
+    if (currentPassword === oldPassword) {
+      await Users.update({ username }, { password: newPassword });
+      return user;
+    } else {
+      throw new Error("Password is incorrect");
+    }
+  },
+};
+
 export const DELETE_USER = {
   type: GeneralResponse,
   args: {
