@@ -17,9 +17,9 @@ export const CreateUser = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    graphqlRequest({ query: createUser, variables: user });
+    await graphqlRequest({ query: createUser, variables: user });
     history.push("/");
   };
 
