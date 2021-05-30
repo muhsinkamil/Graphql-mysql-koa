@@ -1,10 +1,20 @@
 const getAllUsers = `
-query {
-  getAllUsers{
-    username
-    id
+  query {
+    getAllUsers{
+      username
+      id
+    }
   }
-}
 `;
 
-export { getAllUsers };
+const getUserById = `
+  query getUserById($id: ID){
+    getUserById(id: $id){
+      username
+      id
+      email
+    }
+  }
+`;
+
+export { getAllUsers, getUserById };
