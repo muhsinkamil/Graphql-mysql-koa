@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLString } from "graphql";
+import { GraphQLID, GraphQLNonNull, GraphQLString } from "graphql";
 import { Users } from "../../Entities/Users";
 import { GeneralResponse, UserType } from "../Typedefs/User";
 
@@ -19,9 +19,9 @@ export const CREATE_USER = {
 export const UPDATE_PASSWORD = {
   type: UserType,
   args: {
-    username: { type: GraphQLString! },
-    oldPassword: { type: GraphQLString! },
-    newPassword: { type: GraphQLString! },
+    username: { type: GraphQLNonNull(GraphQLString) },
+    oldPassword: { type: GraphQLNonNull(GraphQLString) },
+    newPassword: { type: GraphQLNonNull(GraphQLString) },
   },
   async resolve(root: any, args: any) {
     const { username, oldPassword, newPassword } = args;
@@ -29,7 +29,7 @@ export const UPDATE_PASSWORD = {
     const currentPassword = user?.password;
 
     if (currentPassword === oldPassword) {
-      await Users.update({ username }, { password: newPassword });
+      await Users.update({ username }, { username, password: newPassword });
       return user;
     } else {
       throw new Error("Password is incorrect");

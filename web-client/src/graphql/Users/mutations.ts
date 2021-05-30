@@ -6,3 +6,11 @@ export const createUser = `
     }
   }
 `;
+
+export const updatePassword = `
+  mutation updatePassword($username: String!, $oldPassword: String!, $newPassword: String!){
+    updatePassword(username: $username, oldPassword: $oldPassword, newPassword: $newPassword){
+      id
+    }
+  } 
+`;
