@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { graphqlRequest } from "../helpers/requests";
 import { updatePassword } from "../graphql/Users/mutations";
+import { useForm } from "../hooks/useForm";
+
+interface PasswordFormType {
+  oldPassword: string;
+  newPassword: string;
+}
 
 export const UpdatePassword = ({
   username,
@@ -9,16 +15,14 @@ export const UpdatePassword = ({
   username: string;
   toggleForm: () => void;
 }) => {
-  const [formValues, setFormValues] = useState({
+  const passwordValues: PasswordFormType = {
     oldPassword: "",
     newPassword: "",
-  });
+  };
+
+  const { formValues, handleChange } = useForm(passwordValues);
 
   const [error, setError] = useState("");
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     e.preventDefault();

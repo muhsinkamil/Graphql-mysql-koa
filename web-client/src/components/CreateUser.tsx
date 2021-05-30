@@ -3,23 +3,22 @@ import { createUser } from "../graphql/Users/mutations";
 import { graphqlRequest } from "../helpers/requests";
 import { userType } from "./UsersList";
 import { useHistory } from "react-router-dom";
+import { useForm } from "../hooks/useForm";
 
 export const CreateUser = () => {
   let history = useHistory();
 
-  const [user, setUser] = useState<Omit<userType, "id">>({
+  const user = {
     username: "",
     password: "",
     email: "",
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
   };
+
+  const { formValues, handleChange } = useForm<Omit<userType, "id">>(user);
 
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    await graphqlRequest({ query: createUser, variables: user });
+    await graphqlRequest({ query: createUser, variables: formValues });
     history.push("/");
   };
 
@@ -28,19 +27,19 @@ export const CreateUser = () => {
       <input
         placeholder="username"
         name="username"
-        value={user?.username}
+        value={formValues.username}
         onChange={handleChange}
       />
       <input
         placeholder="email"
         name="email"
-        value={user?.email}
+        value={formValues?.email}
         onChange={handleChange}
       />
       <input
         placeholder="password"
         name="password"
-        value={user?.password}
+        value={formValues?.password}
         onChange={handleChange}
       />
       <button>Submit</button>
