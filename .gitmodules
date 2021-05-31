@@ -1,0 +1,3 @@
+[submodule "mob-client"]
+	path = mob-client
+	url = https://github.com/muhsinkamil/Graphql-mysql-koa.git
