@@ -20,7 +20,6 @@ export const UsersList = () => {
   };
 
   useEffect(() => {
-    console.log("running");
     fetchUsers();
   }, []);
 
