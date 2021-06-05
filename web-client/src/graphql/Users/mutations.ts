@@ -14,3 +14,12 @@ export const updatePassword = `
     }
   } 
 `;
+
+export const deleteUser = `
+  mutation deleteUser($id: ID){
+    deleteUser(id: $id){
+      message
+      success
+    }
+  }
+`;
